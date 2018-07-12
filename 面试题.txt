@@ -1,0 +1,144 @@
+创建对象的三种方法
+第一种方式，字面量
+
+var o1 = {name: "o1"}
+第二种方式，通过构造函数
+
+var o2 = new Object({name: "o2"})
+var M = function(name){ this.name = name }
+var o3 = new M("o3")
+第三种方式，Object.create
+
+var  p = {name: "p"}
+var o4 = Object.create(p)
+新创建的对o4的原型就是p，同时o4也拥有了属性name
+
+
+JS实现继承的几种方式
+借用构造函数实现继承
+
+function Parent1(){
+    this.name = "parent1"
+}
+function Child1(){
+    Parent1.call(this);
+    this.type = "child1";
+}
+缺点：Child1无法继承Parent1的原型对象，并没有真正的实现继承（部分继承）
+
+借用原型链实现继承
+
+function Parent2(){
+    this.name = "parent2";
+    this.play = [1,2,3];
+}
+function Child2(){
+    this.type = "child2";
+}
+Child2.prototype = new Parent2();
+缺点：原型对象的属性是共享的
+
+组合式继承
+
+function Parent3(){
+    this.name = "parent3";
+    this.play = [1,2,3];
+}
+function Child3(){
+    Parent3.call(this);
+    this.type = "child3";
+}
+Child3.prototype = Object.create(Parent3.prototype);
+Child3.prototype.constructor = Child3;
+
+
+两种实现前端路由的方式
+HTML5 History两个新增的API：history.pushState 和 history.replaceState，两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
+
+Hash就是url 中看到 # ,我们需要一个根据监听哈希变化触发的事件( hashchange) 事件。我们用 window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。
+
+优点
+从性能和用户体验的层面来比较的话，后端路由每次访问一个新页面的时候都要向服务器发送请求，然后服务器再响应请求，这个过程肯定会有延迟。而前端路由在访问一个新页面的时候仅仅是变换了一下路径而已，没有了网络延迟，对于用户体验来说会有相当大的提升。
+
+更多内容请看这里
+缺点
+使用浏览器的前进，后退键的时候会重新发送请求，没有合理地利用缓存。
+
+
+什么是闭包？
+当一个内部函数被其外部函数之外的变量引用时，就形成了一个闭包。
+
+简单的来说，所谓的闭包就是一个具有封闭的对外不公开的，包裹结构或空间。
+为什么函数可以构成闭包？
+闭包就是一个具有封闭与包裹功能的结构，是为了实现具有私有访问空间的函数的。函数可以构成闭包。函数内部定义的数据函数外部无法访问，即函数具有封闭性；函数可以封装代码即具有包裹性，所以函数可以构成闭包
+
+闭包有什么用（特性）
+闭包的作用，就是保存自己私有的变量，通过提供的接口(方法)给外部使用，但外部不能直接访问该变量。
+
+当我们需要在模块中定义一些变量，并希望这些变量一直保存在内存中但又不会“污染”全局的变量时，就可以用闭包来定义这个模块。
+
+闭包的缺点：闭包的缺点就是常驻内存，会增大内存使用量，使用不当很容易造成内存泄露。
+
+函数套函数就是闭包吗？：不是！，当一个内部函数被其外部函数之外的变量引用时，才会形成了一个闭包。
+
+闭包的基本模型
+对象模式 
+函数内部定义个一个对象，对象中绑定多个函数（方法），返回对象，利用对象的方法访问函数内的数据
+
+function createPerson() {
+    var __name__ = "";
+    return {
+        getName: function () {
+            return __name__;
+        },
+        setName: function( value ) {
+            // 如果不姓张就报错
+            if ( value.charAt(0) === '张' ) {
+                __name__ = value;
+            } else {
+                throw new Error( '姓氏不对，不能取名' );
+            }
+        }
+    }
+}
+var p = createPerson();
+p.set_Name( '张三丰' );
+console.log( p.get_Name() );
+p.set_Name( '张王富贵' );
+console.log( p.get_Name() );
+函数模式 
+函数内部定义一个新函数，返回新函数，用新函数获得函数内的数据
+
+function foo() {
+    var num = Math.random();
+    function func() {
+        return mun;
+    }
+    return func;
+}
+var f = foo();
+// f 可以直接访问这个 num
+var res1 = f();
+var res2 = f();
+沙箱模式 
+沙箱模式就是一个自调用函数，代码写到函数中一样会执行，但是不会与外界有任何的影响，比如jQuery
+
+(function () {
+   var jQuery = function () { // 所有的算法 }
+   // .... // .... jQuery.each = function () {}
+   window.jQuery = window.$ = jQuery;
+})();
+$.each( ... )
+
+
+HTTPS的握手过程
+浏览器将自己支持的一套加密规则发送给服务器。
+服务器从中选出一组加密算法与HASH算法，并将自己的身份信息以证书的形式发回给浏览器。证书里面包含了网站地址，加密公钥，以及证书的颁发机构等信息。
+浏览器获得网站证书之后浏览器要做以下工作：
+验证证书的合法
+如果证书受信任，或者是用户接受了不受信的证书，浏览器会生成一串随机数的密码，并用证书中提供的公钥加密。
+使用约定好的HASH算法计算握手消息，并使用生成的随机数对消息进行加密，最后将之前生成的所有信息发送给服务器
+网站接收浏览器发来的数据之后要做以下的操作：
+使用自己的私钥将信息解密取出密码，使用密码解密浏览器发来的握手消息，并验证HASH是否与浏览器发来的一致。
+使用密码加密一段握手消息，发送给浏览器。
+浏览器解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束，之后所有的通信数据将由之前浏览器生成的随机密码并利用对称加密算法进行加密。
