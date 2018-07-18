@@ -10,14 +10,13 @@
 /*
  * 注释<1>：此文档的“配置对象”指new PagingHolder时传入的对象
  */
-
+  
 var face_unit = 'B';
 var dev = null;
 try {
 	dev = JSON.parse(localStorage.getItem('dev'));
 } catch (err) {};
 $(document).ready(function() {
-  
 	interface_panel.render();
 	safeEvent_panel.render();
 	list_panel.render();
@@ -100,10 +99,16 @@ $(document).ready(function() {
 		setTimeout(publicFn, 1000);
 
 	}, 1000);
-    var script = $('<script>$(".module").Tdrag({scope:".module-content23",moveClass:"tezml", pos:true,dragChange:true});</script>');   //创建script标签
-    $('body').append(script);  
-
+	  
 });
+window.onload=function(){  
+     $(".module").Tdrag({
+			scope:".module-content23",
+			moveClass:"tezml", 
+			handle:".title-box",
+			pos:true,
+			dragChange:true});
+}
 var fsDef = 5;
 var count = 0;
 var nameArr = ['KB/s', 'MB/s'];
