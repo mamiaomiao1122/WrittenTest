@@ -1,0 +1,154 @@
+
+原生js实现斐波那契数列。
+
+说明：斐波那契数列，以兔子的繁殖的例子而引入，故又称“兔子数列”，指的是这样一个数列：1、1、2、3、5、8、13、21、34、...；在数学上，斐波那契数列以如下被以递归的方法定义：F(1)=1, F(2)=1, F(n)=F(n-1)+F(n-2)  (n>2，n∈N*)。
+
+方法一：递归方法
+
+[javascript] view plain copy
+function f(n) {  
+    if ( n==1 || n==2 ){  
+        return 1;  
+    }else{  
+        return f(n-1) + f(n-2);  
+    }  
+}  
+console.log(f(6));  
+方法二：动态规划方法（性能得到优化）
+
+[javascript] view plain copy
+function fibonacci(n) {  
+    let n1 = 1,  
+        n2 = 1,  
+        sum = 1;  
+    for(let i = 3; i <= n; i += 1) {  
+        sum = n1 + n2;  
+        n1 = n2;    //往后移动一位数  
+        n2 = sum  
+    }  
+    return sum  
+}  
+console.log(fibonacci(5));  
+
+
+
+给定一个对象obj，输出obj第一项的值。
+
+[javascript] view plain copy
+let obj = {  
+    name : "jack",  
+    age : 18,  
+    job : "Software Engineer"  
+};  
+let result = [];  
+for (let key in obj){  
+    result.push(obj[key]);  
+}  
+console.log(result[0]);  
+
+
+去掉一个数组中的重复项，并按升序排序。
+
+方法一：常规方法
+
+[javascript] view plain copy
+function test(arr) {  
+    var result = [];  
+    for (var i=0,len=arr.length; i<len; i++) {  
+        if ( result.indexOf(arr[i]) == -1 ){  
+            result.push(arr[i]);  
+        }  
+    }  
+    return result.sort(function (a,b) {  
+        return a-b;  
+    });  
+}  
+console.log(test([10,1,3,5,5,8]));        //输出：[ 1, 3, 5, 8, 10 ]  
+方法二：ES6方法，使用set去重
+
+[javascript] view plain copy
+function f(arr) {  
+    let newArr = [...new Set(arr)];  
+    return newArr.sort(function (a,b) {  
+        return a-b;  
+    })  
+}  
+console.log(f([10,1,3,5,5,8]));  
+
+
+通过一个输入框，输入一个自定义的数组，例如1,4,5,23,2,17,24,10000000。请把他按照中间高两边低进行排序，最后的结果是1,4,5,23,10000000,24,17,2，算法越准确越好，请注意左右翼数据数据的平衡性。
+
+分析：应该分情况处理。1、如果数组的长度为偶数，则直接分为两组，第一组从小到大排序，第二组从大到小排序，两组拼接输出。　2、如果数值的长度为奇数，取出最大那个数，剩下的偶位数数组进行1操作，然后得到的两个数组跟最大那个数拼接输出。
+
+JavaScript代码：
+
+[javascript] view plain copy
+var cont = prompt("请输入一个数组，并用英文逗号隔开");  
+var arr = cont.split(",");  
+var arr1=[];  
+var arr2=[];  
+var max =Math.max.apply(null, arr);  
+if (arr.length%2==0) {                  //偶数  
+    arrSplit(arr,arr1,arr2);            //调用排序函数      
+    document.write(arr1.concat(arr2));          //拼接arr1和arr2数组  
+}   
+else{                       //奇数  
+    arr.sort(function(a, b){            //对数组进行排序  
+        return b-a;  
+    });               
+    var newArr = arr.slice(1);                  //除掉最大一个的数，得到偶位数的数组                   
+    arrSplit(newArr,arr1,arr2)                
+    arr2.unshift(max);                          //把最大那个数插入arr2    
+    document.write(arr1.concat(arr2));  
+    }  
+              
+function arrSplit(arr,arr1,arr2){       //封装一个对偶数位数组进行分割和排序的函数            
+    var Array = [];             //定义一个数组用于存放arr1和arr2的返回值  
+    for (var i=0; i<arr.length/2; i++) {        //拆分成两个数组  
+        arr1[i]= arr[i];                  
+        arr2[i]= arr[i+arr.length/2];             
+    }             
+    arr1.sort(function (a, b){              //升序  
+        return a-b;               
+    });  
+    arr2.sort(function (c, d){                  //降序      
+        return d-c;               
+    });  
+    Array[0]=arr1;  
+    Array[1]=arr2;  
+    return Array;                               //返回arr1和arr2数组  
+}
+
+
+
+说明：使用document.write()创建HTML标签并添加class；通过递归方法成一个9*9乘法表；再使用css给乘法表添加样式，使其变成等腰三角形。（关于边框重叠的问题，可以通过设置margin为负值来消除）
+
+JavaScript代码：
+
+[javascript] view plain copy
+document.write("<div class='box'>");      //最外层div  
+for (var i=1; i<=9; i++) {           //行  
+    document.write("<div>");        
+    for (var j=1; j<=i; j++) {               //列   
+        document.write("<span class='column'>"+ i + "×" + j + "=" + i*j + "</span>");  
+    }  
+    document.write("</div>");  
+}  
+document.write("</div>");  
+CSS代码：
+
+[css] view plain copy
+.box {  
+     text-align: center;  
+ }  
+ .column {  
+     display: inline-block;  
+     width: 51px;  
+     height: 17px;  
+     font-size: 12px;  
+     border: 1px solid #E2E2E2;  
+     margin-right: -1px;  
+     margin-bottom: -1px;  
+     padding: 5px 10px;  
+}  
+
