@@ -1,0 +1,9 @@
+
+
+
+三者执行顺序为：domready→图片load→页面load。
+首先要清楚dom文档加载的步骤为：1.解析html结构；2.加载外部脚本和样式表文件；3解析并执行脚本；4.dom树构建完成；5.加载图片等外部文件；6.页面加载完毕。
+然后，回答题目：
+domready（也叫DOMContentLoaded ），在第4步完成后触发；图片onload是在第5步完成后触发；页面onload是第6步完成后触发。由此可见三者执行顺序为：domready→图片load→页面load。
+domready和onload事件区别;
+前者：在DOM文档结构准备完毕后就可以对DOM进行操作；后者：整个document文档（包括图片等加载信息)加载完成后才能对DOM进行操作。
